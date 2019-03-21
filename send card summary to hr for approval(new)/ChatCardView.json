@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "schema": {
+    "type": "container",
+    "initialHeight": 300,
+    "layout": "vertical",
+    "children": [
+      {
+        "type": "text",
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "paddingTop": 10,
+        "paddingBottom": 10,
+        "string": "New Leave Requisition from: ",
+        "fontSize": 18,
+        "fontStyle": "bold",
+        "textColor": "#ffffff",
+        "backgroundColor": "#EBB424",
+        "textAlignment": "center",
+        "maxNumberOfLines": 1,
+        "marginBottom": 0
+      },
+      {
+        "type": "text",
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "paddingTop": 0,
+        "paddingBottom": 10,
+        "string": "${Form.properties[name].value}",
+        "fontSize": 18,
+        "fontStyle": "bold",
+        "textColor": "#ffffff",
+        "backgroundColor": "#EBB424",
+        "textAlignment": "center",
+        "maxNumberOfLines": 1,
+        "marginTop": 0
+      },
+      {
+        "type": "text",
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "string": " ",
+        "fontSize": 14,
+        "fontStyle": "normal",
+        "textColor": "#32495f",
+        "textAlignment": "left",
+        "maxNumberOfLines": 4,
+        "marginBottom": 0
+      },
+   
+      {
+        "type": "text",
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "paddingTop": 10,
+        "paddingBottom": 10,
+        "string": "Click to view Leave Request Details",
+        "fontSize": 18,
+        "fontStyle": "bold",
+        "textColor": "#ffffff",
+        "backgroundColor": "#1d50a4",
+        "textAlignment": "center",
+        "maxNumberOfLines": 1,
+        "marginBottom": 10
+      }
+      
+    ]
+  }
+}
