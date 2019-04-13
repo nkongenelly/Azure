@@ -1,0 +1,36 @@
+{
+    "id": "com.kaizalahack.m2mramco_hr",
+    "schemaVersion": 1,
+    "displayName": "Leave Status",
+    "providerName": "M2MRamco",
+    "icon": "AppIcon.png",
+    "version": "6",
+    "minorVersion": "1",
+    "appModel": "AppModel.json",
+    "description": "Package for sending leave status",
+    "dials": {
+        "isLocalised": false,
+        "isPinned": false
+    },
+    "views": {
+        "ChatCanvasCardView": {
+            "sourceLocation": "ChatCardView.json",
+            "showReceipts": true,
+            "showLikes": false,
+            "showComments": false,
+            "showExpiry": false,
+            "showFooter": false,
+            "showHeader": false,
+            "isResponseEditable": false
+        },
+        "ResponseResultsView": {
+            "sourceLocation": "summeryView.html",
+            "showNativeToolbar": false
+        }
+    },
+    "externalUrls": [
+        {
+            "url": "https://prod-28.westeurope.logic.azure.com"
+        }
+    ]
+}

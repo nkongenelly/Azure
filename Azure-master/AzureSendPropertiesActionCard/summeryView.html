@@ -1,0 +1,159 @@
+<html>
+
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link rel="stylesheet" href="themeKaizala.css" />
+        <link rel="stylesheet" href="bootstrap.min.css" />
+	</head>
+	<body onload="onPageLoad()">
+		<div id="header">
+		</div>
+		<div class="section" style="margin-top: 20%">
+            <div class="container bg-light">
+                <div id="details"></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="KASClient.js"></script>
+		<script>
+            var _form;
+            var _properties;
+            function onPageLoad() {
+                // alert("Here!");
+                // Register for Android h/w back press event
+                KASClient.App.registerHardwareBackPressCallback(function () {
+                    KASClient.App.dismissCurrentScreen();
+                });
+                // Global error handling
+                window.onerror = function(msg, url, line, col, error) {
+                    // col & error are new to the HTML 5, so handling for them
+                    var extra = (!col && col !== undefined) ? "" : "#column:" + col;
+                    extra += (!error && error !== undefined) ? "" : "#error:" + error.stack;
+                    var error = "Error:" + msg + "#url:" + url + "#line:" + line + extra;
+                    KASClient.App.logError(error);
+                };
+                KASClient.Form.getFormAsync(function(form, error) {
+                    if (error != null) {
+                        handleError(error);
+                        return;
+                    }
+                    _form = form;
+                    _properties = _form.properties;
+                    infalteHtml();
+                });
+            }
+
+            function infalteHtml() {
+                inflateHeader();
+                inflateBody();
+                // _properties[0].n ? alert(_properties[0].n) : alert("This works " + _properties[0].name);
+
+            }
+
+            function inflateHeader() {
+                var header = document.getElementById("header");
+                KASClient.UI.clearElement(header);
+
+                var navigationBar = new KASClient.UI.KASFormPageNavigationBar();
+                navigationBar.backAsset = "close.png";
+
+                var mainText = KASClient.UI.getElement("div", {
+                    "font-size": "12pt",
+                    "color": "#32495f",
+                    "max-width": "300pt",
+                    "font-weight": "500"
+                });
+                mainText.innerText = "Incident Summary";
+
+                navigationBar.title = mainText.outerHTML;
+                navigationBar.iconPath = "AppIcon.png";
+                navigationBar.backAction = function () {
+                    KASClient.App.dismissCurrentScreen();
+                };
+
+                KASClient.UI.addElement(navigationBar.getView(), header);
+            }
+            
+            function inflateBody() {
+                var mainView = document.getElementById("details");
+                    KASClient.UI.clearElement(mainView);
+
+                for( var property of _properties){
+                    var propertyName = property.name;
+                    var propertyValue = property.value;
+                    
+                    var propertyDetailsArray = propertyValue.split("-");
+
+                    var card = KASClient.UI.getElement("div", {
+                        "margin-bottom": "4px"
+                    });
+                    card.className = "card";
+
+                    var cardBody = KASClient.UI.getElement("div");
+                    cardBody.className = "card-body";
+
+                    var cardTitle = KASClient.getElement("h6");
+                    cardTitle.className = "card-subtitle";
+                    cardTitle.innerText = propertyDetailsArray[0];
+
+                    var textDiv =  KASClient.UI.getElement("div");
+                    if ( propertyName != "attachment" && propertyName != "map" ) { 
+                        if( propertyName == "datetime") {
+                            var date = new Date(+propertyDetailsArray[1]).toDateString();
+                            var time = new Date(+propertyDetailsArray[1]).toTimeString();
+                            var dateTitle = KASClient.UI.getElement("p");
+                            dateTitle.className = "card-text";
+                            dateTitle.innerText = "Date: ";
+                            var dateText = KASClient.UI.getElement("p");
+                            dateText.className = "card-text";
+                            dateText.innerText = date;
+                            var timeTitle = KASClient.UI.getElement("p");
+                            timeTitle.className = "card-text";
+                            timeTitle.innerText = "Time: ";
+                            var timeText = KASClient.UI.getElement("p");
+                            timeText.className = "card-text";
+                            timeText.innerText = time;
+                            KASClient.UI.addElement(dateTitle, textDiv);
+                            KASClient.UI.addElement(dateText, textDiv);
+                            KASClient.UI.addElement(timeTitle, textDiv);
+                            KASClient.UI.addElement(timeText, textDiv);
+
+                        } else {
+                            var cardText = KASClient.UI.getElement("p");
+                            cardText.className = "card-text";
+                            cardText.innerText = propertyDetailsArray[1].trim();
+                            KASClient.UI.addElement(cardText, textDiv);
+                        }
+                    } else if(propertyName == "attachment") {
+                        var imageSrc = JSON.parse(propertyValue.substring(propertyValue.indexOf("-")+1))[0].mediaUrl;
+                        var attachment = KASClient.UI.getElement("img");
+                        attachment.className = "img-thumbnail";
+                        attachment.src = imageSrc;
+                        KASClient.UI.addElement(attachment, textDiv);
+                    } else if(propertyName == "map") {
+                        var locObj = JSON.parse(propertyValue.substring(propertyValue.indexOf("-")+1));
+                        var lat = locObj.lt;
+                        var long = locObj.lg;
+                        var locName = locObj.n;
+                        var maplink = "https://maps.googleapis.com/maps/api/staticmap?zoom=18&size=360x170&maptype=roadmap&markers=color:blue%7C%7C" +
+                            lat + "," + long + "&key=AIzaSyAMfrWKiELcjgQDzNq1n3LTVMSQAXGSs6E";
+                        var mapImage = KASClient.UI.getElement("img");
+                        mapImage.className = "img-thumbnail";
+                        mapImage.src = maplink;
+
+                        var mapText = KASClient.UI.getElement("p");
+                            mapText.className = "card-text";
+                            mapText.innerText = locName;
+
+                        KASClient.UI.addElement(mapImage, textDiv);
+                        KASClient.UI.addElement(mapText, textDiv);
+                    }
+                    KASClient.UI.addElement(cardTitle, cardBody);
+                    KASClient.UI.addElement(textDiv, cardBody);
+                    KASClient.UI.addElement(cardBody, card);
+                    KASClient.UI.addElement(card, mainView);
+                }
+            }
+		</script>
+	</body>
+</html>

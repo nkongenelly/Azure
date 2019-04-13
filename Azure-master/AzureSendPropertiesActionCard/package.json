@@ -1,0 +1,31 @@
+{ 
+    "id": "com.ict.testupdate14", 
+    "schemaVersion": 1, 
+    "displayName": "New incident 01", 
+    "providerName": "M2M", 
+    "icon": "AppIcon.png", 
+    "version": "1", 
+    "minorVersion": "2", 
+    "appModel": "AppModel.json", 
+    "description": "Package for sending incident", 
+    "dials": { 
+    "isLocalised": false, 
+    "isPinned": false 
+    }, 
+    "views": { 
+    "ChatCanvasCardView": { 
+    "sourceLocation": "ChatCardView.json", 
+    "showReceipts": true, 
+    "showLikes": false, 
+    "showComments": false, 
+    "showExpiry": false, 
+    "showFooter": false, 
+    "showHeader": false,  
+    "isResponseEditable": false 
+    },
+    "ResponseResultsView": {
+    "sourceLocation": "summeryView.html",
+    "showNativeToolbar": false
+    }
+    } 
+    }
